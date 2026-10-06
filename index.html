@@ -11,20 +11,15 @@
 
     <style>
         :root {
-            --primary: #1e3a8a;
+            --primary: #0288d1;
             --primary-dark: #01579b;
-            --accent: #2563eb;
             --success: #2e7d32;
             --error: #c62828;
             --bg: #f4f9fd;
             --card-bg: #ffffff;
-            --border: #cbd5e1;
             --text: #2c3e50;
             --text-muted: #546e7a;
-            --correct: #16a34a;
-            --correct-bg: #dcfce7;
-            --wrong: #dc2626;
-            --wrong-bg: #fee2e2;
+            --accent: #ff9800;
         }
 
         * {
@@ -39,12 +34,6 @@
             margin: 0;
             padding: 12px;
             padding-bottom: 70px;
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 980px;
-            margin: 0 auto;
         }
 
         /* نافذة القفل والاشتراك الإجباري */
@@ -96,7 +85,7 @@
         .btn-channel {
             display: block;
             width: 100%;
-            background: #0288d1;
+            background: var(--primary);
             color: #ffffff;
             text-decoration: none;
             padding: 14px;
@@ -143,7 +132,7 @@
         }
         .audio-btn {
             background: #e1f5fe;
-            border: 2px solid #0288d1;
+            border: 2px solid var(--primary);
             border-radius: 50%;
             width: 42px;
             height: 42px;
@@ -154,38 +143,35 @@
             cursor: pointer;
         }
 
-        .header-panel {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 20px;
+        .page-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
         }
-        .header-panel h1 { margin: 0 0 6px 0; font-size: 1.6rem; }
 
-        .card {
+        .lesson-card {
             background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 10px;
+            border-radius: 16px;
             padding: 18px;
             margin-bottom: 22px;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 6px solid var(--primary);
         }
 
-        .card.disabled-step {
-            opacity: 0.45;
-            pointer-events: none;
-            filter: grayscale(80%);
-        }
-
-        .card-title {
-            font-size: 1.15rem;
-            font-weight: bold;
-            color: var(--primary);
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
-            margin-bottom: 14px;
+        .lesson-title {
+            color: var(--primary-dark);
+            font-weight: 900;
+            font-size: 1.3rem;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #b3e5fc;
+            padding-bottom: 10px;
         }
 
         .math-ltr {
@@ -206,19 +192,18 @@
         }
 
         input.is-correct {
-            border-color: var(--correct) !important;
-            background-color: var(--correct-bg) !important;
-            color: var(--correct) !important;
+            border-color: var(--success) !important;
+            background-color: #e8f5e9 !important;
+            color: var(--success) !important;
             font-weight: bold;
         }
         input.is-wrong {
-            border-color: var(--wrong) !important;
-            background-color: var(--wrong-bg) !important;
-            color: var(--wrong) !important;
+            border-color: var(--error) !important;
+            background-color: #ffebee !important;
+            color: var(--error) !important;
             font-weight: bold;
         }
 
-        /* جدول الأعداد */
         .grid-container {
             display: flex;
             gap: 10px;
@@ -278,7 +263,6 @@
             padding: 0;
         }
 
-        /* التمثيل الهندسي */
         .blocks-visual-container {
             display: flex;
             gap: 20px;
@@ -299,8 +283,8 @@
         .rod-unit, .single-unit {
             width: 18px;
             height: 12px;
-            background: #3b82f6;
-            border: 1px solid #1d4ed8;
+            background: #0288d1;
+            border: 1px solid #01579b;
             border-radius: 2px;
         }
         .single-units-group {
@@ -310,8 +294,8 @@
             margin-left: 15px;
         }
         .single-unit {
-            background: #f59e0b;
-            border-color: #b45309;
+            background: #ff9800;
+            border-color: #e65100;
             height: 16px;
             width: 16px;
         }
@@ -326,19 +310,20 @@
             transition: background 0.2s;
         }
         .btn-submit { background: var(--primary); color: white; margin-top: 10px; }
-        .btn-submit:hover { background: var(--accent); }
+        .btn-submit:hover { background: var(--primary-dark); }
         .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
 
-        .partial-feedback {
+        .eval-badge {
+            background: #f1f8e9;
+            border: 1px solid #dcedc8;
+            padding: 8px 14px;
+            border-radius: 10px;
             margin-top: 12px;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
             display: none;
+            font-weight: 800;
             font-size: 0.95rem;
         }
 
-        /* القطع النقدية */
         .coins-box {
             display: flex;
             flex-wrap: wrap;
@@ -370,7 +355,6 @@
             color: #94a3b8 !important;
             text-decoration: line-through;
             transform: scale(0.92);
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
         }
 
         .form-row {
@@ -381,54 +365,33 @@
             flex-wrap: wrap;
         }
 
-        /* التقييم النهائي */
-        #finalReport {
-            display: none;
-            background: white;
+        #final-report {
+            text-align: center;
+            background: #ffffff;
             border: 3px solid var(--primary);
             border-radius: 18px;
             padding: 25px 18px;
             box-shadow: 0 6px 18px rgba(0,0,0,0.08);
             margin-top: 30px;
-            text-align: center;
+            display: none;
         }
-        .chart-container {
-            position: relative;
-            width: 170px;
-            height: 170px;
-            margin: 15px auto;
+        .final-score {
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--primary-dark);
+            margin: 12px 0;
         }
-        .chart-svg {
-            transform: rotate(-90deg);
-            width: 170px;
-            height: 170px;
-        }
-        .chart-bg {
-            fill: none;
-            stroke: #e2e8f0;
-            stroke-width: 14;
-        }
-        .chart-progress {
-            fill: none;
-            stroke: var(--accent);
-            stroke-width: 14;
-            stroke-linecap: round;
-            stroke-dasharray: 440;
-            stroke-dashoffset: 440;
-            transition: stroke-dashoffset 1s ease;
-        }
-        .chart-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.8rem;
+        .final-remark {
+            font-size: 1.25rem;
             font-weight: 800;
-            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
         }
 
         .btn-restart {
-            background: var(--accent);
+            background: var(--primary);
             color: #ffffff;
             border: none;
             padding: 14px 24px;
@@ -450,6 +413,12 @@
             cursor: pointer;
             width: 100%;
         }
+
+        .disabled-step {
+            opacity: 0.45;
+            pointer-events: none;
+            filter: grayscale(80%);
+        }
     </style>
 </head>
 <body>
@@ -463,7 +432,7 @@
                 لِفَتْحِ الدَّرْسِ وَمُتَابَعَةِ الْأَنْشِطَةِ التَّفَاعُلِيَّةِ، يُرْجَى الِانْضِمَامُ إِلَى قَنَاتِنَا أَوَّلًا ثُمَّ الضَّغْطُ عَلَى تَأْكِيدِ الِاشْتِرَاكِ.
             </div>
             <a href="https://t.me/c/3910412986" target="_blank" class="btn-channel" id="channel-link">📢 الِانْضِمَامُ إِلَى الْقَنَاةِ</a>
-            <button class="btn-check-sub" onclick="verifySubscription(true)">✅ تَأْكِيدُ الِاشْتِرَاكِ</button>
+            <button class="btn-check-sub" onclick="verifySubscription()">✅ تَأْكِيدُ الِاشْتِرَاكِ</button>
             <div id="sub-status-msg" class="sub-status-msg"></div>
         </div>
     </div>
@@ -475,14 +444,10 @@
 
 <div class="container">
 
-  <div class="header-panel">
-    <h1>الدرس 01: الأعداد من 0 إلى 99</h1>
-    <p>السنة الثالثة ابتدائي | المنهاج الرسمي - مرحلة التقويم البيداغوجي المباشر</p>
-  </div>
-
   <!-- 1. أكتشف: جدول الأعداد ص 12 -->
-  <div class="card" id="step1">
-    <div class="card-title">1. أَكْتَشِفُ: جدول الأعداد من 0 إلى 99 (كتاب التلميذ ص 12)</div>
+  <div class="lesson-card" id="step1">
+    <span class="page-badge">كِتَابُ التِّلْمِيذِ - صَفْحَةُ 12</span>
+    <h2 class="lesson-title">1. أَكْتَشِفُ: جَدْوَلُ الْأَعْدَادِ مِنْ 0 إِلَى 99</h2>
     <p>لاحظ جدول الأعداد، ثم املأ الخانات الفارغة أفقياً وعمودياً:</p>
     <div class="grid-container">
       <div class="hundred-grid" id="gridBox"></div>
@@ -500,12 +465,13 @@
       </div>
     </div>
     <button class="btn btn-submit" id="btn1" onclick="validateStep1()">تثبيت الإجابة والانتقال</button>
-    <div id="fb1" class="partial-feedback"></div>
+    <div id="fb1" class="eval-badge"></div>
   </div>
 
   <!-- 2. أكتشف: الكتابة بالحروف وبالأرقام ص 12 -->
-  <div class="card disabled-step" id="step2">
-    <div class="card-title">2. أَكْتَشِفُ: كتابة الأعداد بالحروف وبالأرقام (كتاب التلميذ ص 12)</div>
+  <div class="lesson-card disabled-step" id="step2">
+    <span class="page-badge">كِتَابُ التِّلْمِيذِ - صَفْحَةُ 12</span>
+    <h2 class="lesson-title">2. أَكْتَشِفُ: كِتَابَةُ الْأَعْدَادِ بِالْحُرُوفِ وَبِالْأَرْقَامِ</h2>
     <p><strong>أ) اكتب الأعداد بالحروف:</strong></p>
     <div class="form-row">
       <label>43:</label><input type="text" id="w_43" style="width: 170px;">
@@ -520,12 +486,13 @@
       <label>ثَمَانِيَةٌ وَخَمْسُونَ:</label><input type="number" id="n_58" style="width: 80px; direction:ltr;">
     </div>
     <button class="btn btn-submit" id="btn2" onclick="validateStep2()">تثبيت الإجابة والانتقال</button>
-    <div id="fb2" class="partial-feedback"></div>
+    <div id="fb2" class="eval-badge"></div>
   </div>
 
   <!-- 3. أكتشف: السؤال الرابع - الشكل الهندسي ص 12 -->
-  <div class="card disabled-step" id="step3">
-    <div class="card-title">3. أَكْتَشِفُ (السؤال 4): اكتب العدد بالأرقام وبالحروف (كتاب التلميذ ص 12)</div>
+  <div class="lesson-card disabled-step" id="step3">
+    <span class="page-badge">كِتَابُ التِّلْمِيذِ - صَفْحَةُ 12</span>
+    <h2 class="lesson-title">3. أَكْتَشِفُ: اكْتُبِ الْعَدَدَ الْمُمَثَّلَ فِي الشَّكْلِ</h2>
     <p>لاحظ التمثيل الهندسي المقابل، ثم اكتب العدد الذي يمثله بالأرقام وبالحروف:</p>
     <div class="blocks-visual-container">
       <div class="rod-column">
@@ -551,12 +518,13 @@
       <input type="text" id="geo_word" style="width: 200px;">
     </div>
     <button class="btn btn-submit" id="btn3" onclick="validateStep3()">تثبيت الإجابة والانتقال</button>
-    <div id="fb3" class="partial-feedback"></div>
+    <div id="fb3" class="eval-badge"></div>
   </div>
 
   <!-- 4. أنجز: تشكيل الأعداد بالبطاقات (5 ، 6 ، 9) ص 12 -->
-  <div class="card disabled-step" id="step4">
-    <div class="card-title">4. أُنْجِزُ: تشكيل الأعداد الممكنة برقمين مختلفين (كتاب التلميذ ص 12)</div>
+  <div class="lesson-card disabled-step" id="step4">
+    <span class="page-badge">كِتَابُ التِّلْمِيذِ - صَفْحَةُ 12</span>
+    <h2 class="lesson-title">4. أُنْجِزُ: تَشْكِيلُ الْأَعْدَادِ الْمُمْكِنَةِ</h2>
     <p>باستعمال الأرقام: <strong>5 ، 6 ، 9</strong>، اكتب كل الأعداد الممكنة والمكونة من رقمين مختلفين (6 أعداد):</p>
     <div class="form-row math-ltr">
       <input type="number" id="c1" style="width:70px">
@@ -567,12 +535,13 @@
       <input type="number" id="c6" style="width:70px">
     </div>
     <div><button class="btn btn-submit" id="btn4" onclick="validateStep4()">تثبيت الإجابة والانتقال</button></div>
-    <div id="fb4" class="partial-feedback"></div>
+    <div id="fb4" class="eval-badge"></div>
   </div>
 
   <!-- 5. أنجز: كتابة الأعداد ص 12 -->
-  <div class="card disabled-step" id="step5">
-    <div class="card-title">5. أُنْجِزُ: التطبيق الكتابي (كتاب التلميذ ص 12)</div>
+  <div class="lesson-card disabled-step" id="step5">
+    <span class="page-badge">كِتَابُ التِّلْمِيذِ - صَفْحَةُ 12</span>
+    <h2 class="lesson-title">5. أُنْجِزُ: التَّطْبِيقُ الْكِتَابِيُّ</h2>
     <p><strong>أ) اكتب الأعداد بالحروف:</strong></p>
     <div class="form-row">
       <label>96:</label><input type="text" id="w2_96" style="width: 170px;">
@@ -588,12 +557,13 @@
       <label>أَرْبَعَةٌ وَتِسْعُونَ:</label><input type="number" id="n2_94" style="width: 80px; direction:ltr;">
     </div>
     <button class="btn btn-submit" id="btn5" onclick="validateStep5()">تثبيت الإجابة والانتقال</button>
-    <div id="fb5" class="partial-feedback"></div>
+    <div id="fb5" class="eval-badge"></div>
   </div>
 
   <!-- 6. أتمرن: السؤال 1 و 2 من دفتر الأنشطة ص 6 -->
-  <div class="card disabled-step" id="step6">
-    <div class="card-title">6. أَتَمَرَّنُ (1 و 2): كتابة الأعداد بالأرقام وبالحروف (دفتر الأنشطة ص 6)</div>
+  <div class="lesson-card disabled-step" id="step6">
+    <span class="page-badge">كُرَّاسُ الأَنْشِطَةِ - صَفْحَةُ 6</span>
+    <h2 class="lesson-title">6. أَتَمَرَّنُ (1 و 2): كِتَابَةُ الْأَعْدَادِ</h2>
     <p><strong>1. اكتب الأعداد بالأرقام:</strong></p>
     <div class="form-row">
       <label>سِتُّونَ:</label><input type="number" id="act1_60" style="width: 80px; direction:ltr;">
@@ -607,12 +577,13 @@
       <label>36:</label><input type="text" id="act2_36" style="width: 180px;">
     </div>
     <button class="btn btn-submit" id="btn6" onclick="validateStep6()">تثبيت الإجابة والانتقال</button>
-    <div id="fb6" class="partial-feedback"></div>
+    <div id="fb6" class="eval-badge"></div>
   </div>
 
   <!-- 7. أتمرن: السؤال 3 و 4 المراتب والترتيب ص 6 دفتر الأنشطة -->
-  <div class="card disabled-step" id="step7">
-    <div class="card-title">7. أَتَمَرَّنُ (3 و 4): القيمة المكانية والترتيب (دفتر الأنشطة ص 6)</div>
+  <div class="lesson-card disabled-step" id="step7">
+    <span class="page-badge">كُرَّاسُ الأَنْشِطَةِ - صَفْحَةُ 6</span>
+    <h2 class="lesson-title">7. أَتَمَرَّنُ (3 و 4): الْقِيمَةُ الْمَكَانِيَّةُ وَالتَّرْتِيبُ</h2>
     <p><strong>3. أكمل في العدد 92:</strong></p>
     <div class="form-row">
       <label>رَقْمُ الوَحَدَاتِ هو:</label><input type="number" id="p_u" style="width: 60px; direction:ltr;">
@@ -630,23 +601,26 @@
       <input type="number" id="ord_4" style="width: 65px;">
     </div>
     <div><button class="btn btn-submit" id="btn7" onclick="validateStep7()">تثبيت الإجابة والانتقال</button></div>
-    <div id="fb7" class="partial-feedback"></div>
+    <div id="fb7" class="eval-badge"></div>
   </div>
 
   <!-- 8. أتمرن: السؤال 5 التفكيك الجمعي ص 6 دفتر الأنشطة -->
-  <div class="card disabled-step" id="step8">
-    <div class="card-title">8. أَتَمَرَّنُ (5): التفكيك الجمعي كما في المثال 86 = 80 + 6 (دفتر الأنشطة ص 6)</div>
+  <div class="lesson-card disabled-step" id="step8">
+    <span class="page-badge">كُرَّاسُ الأَنْشِطَةِ - صَفْحَةُ 6</span>
+    <h2 class="lesson-title">8. أَتَمَرَّنُ (5): التَّفْكِيكُ الْجَمْعِيُّ</h2>
+    <p>أكمل التفكيك الجمعي كما في المثال: 86 = 80 + 6</p>
     <div class="form-row math-ltr"><span>62 = </span><input type="number" id="dec_62_t" style="width:70px"><span> + </span><input type="number" id="dec_62_u" style="width:60px"></div>
     <div class="form-row math-ltr"><span>78 = </span><input type="number" id="dec_78_t" style="width:70px"><span> + </span><input type="number" id="dec_78_u" style="width:60px"></div>
     <div class="form-row math-ltr"><span>44 = </span><input type="number" id="dec_44_t" style="width:70px"><span> + </span><input type="number" id="dec_44_u" style="width:60px"></div>
     <div class="form-row math-ltr"><span>91 = </span><input type="number" id="dec_91_t" style="width:70px"><span> + </span><input type="number" id="dec_91_u" style="width:60px"></div>
     <div><button class="btn btn-submit" id="btn8" onclick="validateStep8()">تثبيت الإجابة والانتقال</button></div>
-    <div id="fb8" class="partial-feedback"></div>
+    <div id="fb8" class="eval-badge"></div>
   </div>
 
   <!-- 9. أتمرن: السؤال 6 مسألة القطع النقدية ص 6 دفتر الأنشطة -->
-  <div class="card disabled-step" id="step9">
-    <div class="card-title">9. أَتَمَرَّنُ (6): مسألة الشراء بأقل عدد ممكن من القطع (دفتر الأنشطة ص 6)</div>
+  <div class="lesson-card disabled-step" id="step9">
+    <span class="page-badge">كُرَّاسُ الأَنْشِطَةِ - صَفْحَةُ 6</span>
+    <h2 class="lesson-title">9. أَتَمَرَّنُ (6): الدَّفْعُ بِأَقَلِّ عَدَدٍ مِنَ الْقِطَعِ</h2>
     <p>اشترى أيمن لعبة ثمنها <strong>95 ديناراً</strong>. هذه هي القطع الموجودة في حافظته:</p>
     <p><em>اشطب على القطع التي دفعها أيمن ليدفع الثمن بأقل عدد ممكن من القطع:</em></p>
 
@@ -665,12 +639,13 @@
     </div>
     <p>المبلغ المحدد بالشطب حالياً: <span id="currentWalletSum" style="font-weight:bold; color:var(--primary);">0</span> دج (عدد القطع: <span id="currentWalletCount">0</span>)</p>
     <button class="btn btn-submit" id="btn9" onclick="validateStep9()">تثبيت الإجابة والانتقال</button>
-    <div id="fb9" class="partial-feedback"></div>
+    <div id="fb9" class="eval-badge"></div>
   </div>
 
   <!-- 10. أبحث: تشكيل الأعداد بالبطاقات 1 ، 0 ، 9 ص 6 دفتر الأنشطة -->
-  <div class="card disabled-step" id="step10">
-    <div class="card-title">10. أَبْحَثُ: تشكيل الأعداد ذات رقمين بالبطاقات 1 ، 0 ، 9 (دفتر الأنشطة ص 6)</div>
+  <div class="lesson-card disabled-step" id="step10">
+    <span class="page-badge">كُرَّاسُ الأَنْشِطَةِ - صَفْحَةُ 6</span>
+    <h2 class="lesson-title">10. أَبْحَثُ: تَشْكِيلُ الْأَعْدَادِ بِالْبِطَاقَاتِ 1 ، 0 ، 9</h2>
     <p>اكتب كل الأعداد ذات رقمين والتي يمكن تشكيلها بالبطاقات <strong>1 ، 0 ، 9</strong> (توجد 4 أعداد ممكنة):</p>
     <div class="form-row math-ltr">
       <input type="number" id="b1" style="width:75px">
@@ -679,29 +654,26 @@
       <input type="number" id="b4" style="width:75px">
     </div>
     <div><button class="btn btn-submit" id="btn10" onclick="validateStep10()">تثبيت الإجابة وإظهار التقييم النهائي</button></div>
-    <div id="fb10" class="partial-feedback"></div>
+    <div id="fb10" class="eval-badge"></div>
   </div>
 
-  <!-- التقييم النهائي الشامل والرسم الدائري -->
-  <div id="finalReport">
+  <!-- التقييم النهائي الشامل -->
+  <div id="final-report">
     <h2 style="color: var(--primary-dark); margin-top: 0;">📊 التَّقْرِيرُ النِّهَائِيُّ لِلْوَحْدَةِ</h2>
-    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+    <p style="color: var(--text-muted); font-size:1.1rem; margin-bottom:15px;">حصيلة إجابات التمارين التفاعلية :</p>
     
-    <div class="chart-container">
-      <svg class="chart-svg" viewBox="0 0 160 160">
-        <circle class="chart-bg" cx="80" cy="80" r="70"></circle>
-        <circle class="chart-progress" id="circleProg" cx="80" cy="80" r="70"></circle>
-      </svg>
-      <div class="chart-text" id="circleText">0%</div>
+    <div style="display:flex; justify-content: space-around; margin: 15px 0;">
+        <div style="color: var(--success); font-weight:800; font-size:1.25rem;">
+            إجابات صحيحة<br><span id="repCorrect" style="font-size:1.8rem;">0</span>
+        </div>
+        <div style="color: var(--error); font-weight:800; font-size:1.25rem;">
+            إجابات خاطئة<br><span id="repWrong" style="font-size:1.8rem;">0</span>
+        </div>
     </div>
 
-    <div style="font-size: 1.15rem; line-height: 2;">
-      <div>مجموع العناصر المقيمة: <strong id="repTotal">68</strong> عنصراً</div>
-      <div style="color: var(--correct);">عدد الإجابات الصحيحة: <strong id="repCorrect">0</strong></div>
-      <div style="color: var(--wrong);">عدد الإجابات الخاطئة: <strong id="repWrong">0</strong></div>
-      <div id="repGrade" style="font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 15px;"></div>
-    </div>
-
+    <div class="final-score" id="circleText">0%</div>
+    <div class="final-remark" id="repGrade">ممتاز!</div>
+    
     <button class="btn-restart" onclick="restartEntireLesson()">🔄 إِعَادَةُ الْمُحَاوَلَةِ مِنَ الْبِدَايَةِ</button>
     <button class="btn-exit" onclick="exitTelegramApp()">🚪 الْخُرُوجُ مِنَ التَّطْبِيقِ</button>
   </div>
@@ -709,7 +681,7 @@
 </div>
 
 <script>
-    // ربط البوت الجديد ومعرف قناة السنة الثالثة
+    // بيانات البوت والقناة للتحقق الإجباري
     const BOT_TOKEN = "8666327804:AAGKgRJBH7MrTfpDjxZ_WB5Z-0IfqGm5xDM";
     const CHANNEL_ID = "-1003910412986";
 
@@ -721,15 +693,8 @@
     }
 
     // التحقق من الاشتراك الإجباري
-    async function verifySubscription(isManual = false) {
+    async function verifySubscription() {
         const statusMsg = document.getElementById('sub-status-msg');
-        
-        // التحقق من وجود تصريح سابق محفوظ على الهاتف
-        if (localStorage.getItem('math_g3_sub_verified') === 'true') {
-            document.getElementById('sub-lock-screen').style.display = 'none';
-            return;
-        }
-
         statusMsg.style.color = "#0288d1";
         statusMsg.textContent = "جَارٍ التَّحَقُّقُ مِنَ الِاشْتِرَاكِ...";
 
@@ -754,7 +719,6 @@
                 if (['creator', 'administrator', 'member'].includes(status)) {
                     statusMsg.style.color = "#2e7d32";
                     statusMsg.textContent = "تَمَّ التَّأَكُّدُ بِنَجَاحٍ! جَارٍ فَتْحُ الدَّرْسِ...";
-                    localStorage.setItem('math_g3_sub_verified', 'true');
                     setTimeout(() => {
                         document.getElementById('sub-lock-screen').style.display = 'none';
                     }, 600);
@@ -763,32 +727,12 @@
                     statusMsg.textContent = "لَمْ تَنْتَسِبْ إِلَى الْقَنَاةِ بَعْدُ، يُرْجَى الِانْضِمَامُ أَوَّلًا.";
                 }
             } else {
-                // إذا كان البوت غير مشرف أو حدث خطأ في الصلاحيات وضغط العضو على تأكيد
-                if (isManual) {
-                    statusMsg.style.color = "#2e7d32";
-                    statusMsg.textContent = "تَمَّ التَّأَكُّدُ بِنَجَاحٍ! جَارٍ فَتْحُ الدَّرْسِ...";
-                    localStorage.setItem('math_g3_sub_verified', 'true');
-                    setTimeout(() => {
-                        document.getElementById('sub-lock-screen').style.display = 'none';
-                    }, 600);
-                } else {
-                    statusMsg.style.color = "#c62828";
-                    statusMsg.textContent = "تَعَذَّرَ التَّحَقُّقُ، تَأَكَّدْ أَنَّ الْبُوتَ مُشْرِفٌ فِي الْقَنَاةِ.";
-                }
+                statusMsg.style.color = "#c62828";
+                statusMsg.textContent = "تَعَذَّرَ التَّحَقُّقُ، تَأَكَّدْ أَنَّ الْبُوتَ مُشْرِفٌ فِي الْقَنَاةِ.";
             }
         } catch (error) {
-            // في حال وجود CORS أو حظر اتصال خارجي من المتصفح
-            if (isManual) {
-                statusMsg.style.color = "#2e7d32";
-                statusMsg.textContent = "تَمَّ التَّأَكُّدُ بِنَجَاحٍ! جَارٍ فَتْحُ الدَّرْسِ...";
-                localStorage.setItem('math_g3_sub_verified', 'true');
-                setTimeout(() => {
-                    document.getElementById('sub-lock-screen').style.display = 'none';
-                }, 600);
-            } else {
-                statusMsg.style.color = "#c62828";
-                statusMsg.textContent = "حَدَثَ خَطَأٌ فِي الِاتِّصَالِ، حَاوِلْ مَرَّةً أُخْرَى.";
-            }
+            statusMsg.style.color = "#c62828";
+            statusMsg.textContent = "حَدَثَ خَطَأٌ فِي الِاتِّصَالِ، حَاوِلْ مَرَّةً أُخْرَى.";
         }
     }
 
@@ -905,10 +849,9 @@
     function showPartial(fbId, c, w) {
       const fb = document.getElementById(fbId);
       if (!fb) return;
-      fb.style.display = 'block';
-      fb.style.background = '#f1f5f9';
-      fb.style.border = '1px solid #cbd5e1';
-      fb.innerHTML = `التقييم الجزئي: <span style="color:var(--correct)">صحيحة: ${c}</span> | <span style="color:var(--wrong)">خاطئة: ${w}</span>`;
+      fb.style.display = 'flex';
+      fb.style.justifyContent = 'space-around';
+      fb.innerHTML = `<span>صحيحة: <strong style="color:var(--success)">${c}</strong></span><span>خاطئة: <strong style="color:var(--error)">${w}</strong></span>`;
       
       if (w === 0 && c > 0) {
         playSuccess();
@@ -1158,19 +1101,16 @@
       const isOptimal = (sum === 95 && counts[50] === 1 && counts[20] === 2 && counts[5] === 1 && counts[10] === 0);
       const fb = document.getElementById('fb9');
       if (fb) {
-        fb.style.display = 'block';
+        fb.style.display = 'flex';
+        fb.style.justifyContent = 'space-around';
         if (isOptimal) {
-          fb.style.background = 'var(--correct-bg)';
-          fb.style.color = 'var(--correct)';
-          fb.innerText = 'أحسنت! دفعت 95 دج بأقل عدد ممكن: 4 قطع (50 + 20 + 20 + 5).';
+          fb.innerHTML = `<span>النتيجة: <strong style="color:var(--success)">صحيحة ومثالية (4 قطع: 50 + 20 + 20 + 5)</strong></span>`;
           totalCorrect++;
-          showPartial('fb9', 1, 0);
+          playSuccess();
         } else {
-          fb.style.background = 'var(--wrong-bg)';
-          fb.style.color = 'var(--wrong)';
-          fb.innerText = 'إجابة غير مطابقة للشرط (المطلوب دفع 95 دج بأقل عدد ممكن: 50 + 20 + 20 + 5).';
+          fb.innerHTML = `<span>النتيجة: <strong style="color:var(--error)">غير مطابقة للشرط (المطلوب أقل عدد ممكن)</strong></span>`;
           totalWrong++;
-          showPartial('fb9', 0, 1);
+          playError();
         }
       }
 
@@ -1205,7 +1145,7 @@
 
     // التقرير النهائي الشامل
     function renderFinalReport() {
-      const rep = document.getElementById('finalReport');
+      const rep = document.getElementById('final-report');
       if (!rep) return;
       rep.style.display = 'block';
       rep.scrollIntoView({ behavior: 'smooth' });
@@ -1213,44 +1153,26 @@
       const totalQuestions = totalCorrect + totalWrong;
       const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 
-      document.getElementById('repTotal').innerText = totalQuestions;
       document.getElementById('repCorrect').innerText = totalCorrect;
       document.getElementById('repWrong').innerText = totalWrong;
-
-      const circle = document.getElementById('circleProg');
-      const circleText = document.getElementById('circleText');
-      const circumference = 2 * Math.PI * 70;
-      const offset = circumference - (percentage / 100) * circumference;
-
-      let strokeColor = '#dc2626';
-      if (percentage >= 85) strokeColor = '#16a34a';
-      else if (percentage >= 65) strokeColor = '#f59e0b';
-
-      if (circle) circle.style.stroke = strokeColor;
-      if (circleText) {
-        circleText.style.color = strokeColor;
-        circleText.innerText = `${percentage}%`;
-      }
-      setTimeout(() => {
-        if (circle) circle.style.strokeDashoffset = offset;
-      }, 100);
+      document.getElementById('circleText').innerText = `${percentage}%`;
 
       const gradeDiv = document.getElementById('repGrade');
       if (gradeDiv) {
         if (percentage >= 85) {
-          gradeDiv.style.background = '#dcfce7';
-          gradeDiv.style.color = '#15803d';
-          gradeDiv.innerText = 'ملاحظة التقدير: ممتاز! تحصيل بيداغوجي رفيع واستيعاب كامل ومتقن لكفاءات الدرس.';
+          gradeDiv.style.backgroundColor = '#c8e6c9';
+          gradeDiv.style.color = '#1b5e20';
+          gradeDiv.innerText = 'ممتاز! عمل رائع وإتقان تام لكفاءات الدرس.';
           playClaps();
         } else if (percentage >= 65) {
-          gradeDiv.style.background = '#fef3c7';
-          gradeDiv.style.color = '#b45309';
-          gradeDiv.innerText = 'ملاحظة التقدير: جيد! توجد بعض الأخطاء الحسابية أو الإملائية التي تم تظليلها بالأحمر للمراجعة.';
+          gradeDiv.style.backgroundColor = '#bbdefb';
+          gradeDiv.style.color = '#0d47a1';
+          gradeDiv.innerText = 'جيد جداً! استيعابك للمفاهيم ممتاز.';
           playSuccess();
         } else {
-          gradeDiv.style.background = '#fee2e2';
-          gradeDiv.style.color = '#b91c1c';
-          gradeDiv.innerText = 'ملاحظة التقدير: يحتاج إلى دعم ومرافقة! يرجى من الولي مراجعة الخانات والأرقام الملونة بالأحمر مع التلميذ.';
+          gradeDiv.style.backgroundColor = '#ffcdd2';
+          gradeDiv.style.color = '#b71c1c';
+          gradeDiv.innerText = 'حاول مجدداً وركز أكثر في التمارين.';
           playError();
         }
       }
@@ -1266,7 +1188,7 @@
         inp.className = '';
       });
 
-      document.querySelectorAll('.partial-feedback').forEach(f => {
+      document.querySelectorAll('.eval-badge').forEach(f => {
         f.style.display = 'none';
         f.innerHTML = '';
       });
@@ -1286,10 +1208,8 @@
       const step1 = document.getElementById('step1');
       if (step1) step1.classList.remove('disabled-step');
 
-      const rep = document.getElementById('finalReport');
+      const rep = document.getElementById('final-report');
       if (rep) rep.style.display = 'none';
-      const circle = document.getElementById('circleProg');
-      if (circle) circle.style.strokeDashoffset = 440;
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1298,7 +1218,7 @@
         totalCorrect = 0;
         totalWrong = 0;
         renderGrid();
-        verifySubscription(false);
+        verifySubscription();
     }
 
     window.onload = initAllActivities;
